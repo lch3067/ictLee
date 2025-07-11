@@ -1,8 +1,10 @@
 package main.dto;
 
 // 와인 객체
-public class wineDto {
+public class WineDto {
 
+	// 와인 제품 번호
+	private String wine_number;
 	// 와인 이름
 	private String wine_name;
 	// 와인 가격
@@ -15,10 +17,10 @@ public class wineDto {
 	// 기본 생성자는 매개변수가 없는 경우 생성하는 목적이지만, 
 	// 굳히 setter와 getter를 사용하여 맴버변수이 넣을거면, 생성자로 넣지 않아도 된다.
 	// 자동으로 생성해주기 때문이다.
-	public wineDto() {}
+	public WineDto() {}
 	
 	// 하지만, 매개변수가 있는 생성자를 만들면 기본 생성자도 같이 만들어 줘야한다.
-	public wineDto(String wine_name, int wine_price, String wine_growing, String wine_strength) {
+	public WineDto(String wine_name, int wine_price, String wine_growing, String wine_strength) {
 		super();
 		this.wine_name = wine_name;
 		this.wine_price = wine_price;
