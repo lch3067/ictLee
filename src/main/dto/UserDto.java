@@ -14,10 +14,11 @@ public class UserDto {
 	private Timestamp createdAt;
 	private Timestamp updatedAt;
 
-	public UserDto() {}
-	
-	public UserDto(String userId, String username, String password, String email, LocalDate birthDate, Timestamp createdAt,
-			Timestamp updatedAt) {
+	public UserDto() {
+	}
+
+	public UserDto(String userId, String username, String password, String email, LocalDate birthDate,
+			Timestamp createdAt, Timestamp updatedAt) {
 		this.userId = userId;
 		this.username = username;
 		this.password = password;
@@ -88,5 +89,5 @@ public class UserDto {
 		return "UserDto [userId=" + userId + ", username=" + username + ", password=" + password + ", email=" + email
 				+ ", birthDate=" + birthDate + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + "]";
 	};
-	
+
 }

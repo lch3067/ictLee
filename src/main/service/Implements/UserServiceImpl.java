@@ -8,11 +8,11 @@ import main.service.UserService;
 
 public class UserServiceImpl implements UserService{
 
-	UserDao logindao = UserDaoImpl.getInstance();
+	UserDao loginDao = UserDaoImpl.getInstance();
 	
 	@Override
 	public LoginResultDto Login(String id, String pwd) {
-		LoginResultDto authentication =  logindao.Login(id, pwd);
+		LoginResultDto authentication =  loginDao.Login(id, pwd);
 		if(authentication.isSuccess()) {
 			return new LoginResultDto(authentication.isSuccess(), authentication.getRole(), authentication.getName());
 		} else {
@@ -22,7 +22,7 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public boolean Join(UserDto userdto) {
-		boolean authentication =  logindao.Join(userdto);
+		boolean authentication =  loginDao.Join(userdto);
 		if(authentication) {
 			return true;
 		} else {
