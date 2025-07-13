@@ -7,6 +7,8 @@ import main.dto.WineDto;
 // Service 설계
 public interface WineService {
 	
+	public List<WineDto> selectWineProduct();
+	
 	public int inserWineProduct(WineDto winedto);
 	
 	public int updateWineProduct(WineDto winedto);
@@ -16,5 +18,7 @@ public interface WineService {
 	public ArrayList<WineDto> selectOneWineProduct(String wine_name);
 	
 	public ArrayList<WineDto> selectAllWineProduct();
+	
+	public ArrayList<WineDto> selectBestOfBestWineProductTopFive();
 	
 }
