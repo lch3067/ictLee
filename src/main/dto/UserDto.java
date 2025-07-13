@@ -2,6 +2,7 @@ package main.dto;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 
 public class UserDto {
 
@@ -9,15 +10,14 @@ public class UserDto {
 	private String username;
 	private String password;
 	private String email;
-	private Date birthDate;
+	private LocalDate birthDate;
 	private Timestamp createdAt;
 	private Timestamp updatedAt;
 
 	public UserDto() {}
 	
-	public UserDto(String userId, String username, String password, String email, Date birthDate, Timestamp createdAt,
+	public UserDto(String userId, String username, String password, String email, LocalDate birthDate, Timestamp createdAt,
 			Timestamp updatedAt) {
-		super();
 		this.userId = userId;
 		this.username = username;
 		this.password = password;
@@ -59,12 +59,12 @@ public class UserDto {
 		this.email = email;
 	}
 
-	public Date getBirthDate() {
+	public LocalDate getBirthDate() {
 		return birthDate;
 	}
 
-	public void setBirthDate(Date birthDate) {
-		this.birthDate = birthDate;
+	public void setBirthDate(LocalDate date) {
+		this.birthDate = date;
 	}
 
 	public Timestamp getCreatedAt() {
@@ -81,6 +81,12 @@ public class UserDto {
 
 	public void setUpdatedAt(Timestamp updatedAt) {
 		this.updatedAt = updatedAt;
+	}
+
+	@Override
+	public String toString() {
+		return "UserDto [userId=" + userId + ", username=" + username + ", password=" + password + ", email=" + email
+				+ ", birthDate=" + birthDate + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + "]";
 	};
 	
 }
