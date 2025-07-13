@@ -25,38 +25,52 @@ public class OrderDaoImpl implements OrderDao {
 	@Override
 	public boolean insertOrder(OrderDto dto, String userName) throws SQLException {
 
-		String sql = """
-				  INSERT ALL
-				    INTO CUSTOMERS (CUSTOMER_ID, USER_ID, NAME)
-				      VALUES (?,
-				      	(SELECT USER_ID FROM USERS WHERE USERNAME = ?),
-				      	?
-				      )
-				    INTO ORDERS (ORDER_ID, CUSTOMER_ID, WINE_NUMBER, PRODUCT_PRICE, DISCOUNT)
-				      VALUES (?, ?, ?, ?, ?)
-				  SELECT * FROM DUAL
+		String mergeSql = """
+				MERGE INTO CUSTOMERS tgt
+				USING (
+				  SELECT ? AS CUSTOMER_ID,
+				         (SELECT USER_ID FROM USERS WHERE USERNAME = ?) AS USER_ID,
+				         ? AS NAME
+				  FROM DUAL
+				) src
+				ON (tgt.CUSTOMER_ID = src.CUSTOMER_ID)
+				WHEN NOT MATCHED THEN
+				  INSERT (CUSTOMER_ID, USER_ID, NAME)
+				  VALUES (src.CUSTOMER_ID, src.USER_ID, src.NAME)
 				""";
 
-		try (Connection conn = OracleConnectionManager.getConnection();
-				PreparedStatement pstmt = conn.prepareStatement(sql)) {
+		String orderSql = """
+				INSERT INTO ORDERS
+				(ORDER_ID, CUSTOMER_ID, WINE_NUMBER, PRODUCT_PRICE, DISCOUNT)
+				VALUES (?, ?, ?, ?, ?)
+				""";
 
-			// 1. CUSTOMERS 설정
-			pstmt.setString(1, dto.getCusomter_Id());
-			pstmt.setString(2, userName);
-			pstmt.setString(3, userName);
+		try (Connection conn = OracleConnectionManager.getConnection()) {
+			conn.setAutoCommit(false);
+			try (PreparedStatement pm = conn.prepareStatement(mergeSql);
+					PreparedStatement po = conn.prepareStatement(orderSql)) {
 
-			// 2. ORDERS 설정 (CUSTOMER_ID 다시 바인딩 뒤이드)
-			pstmt.setString(4, dto.getOrder_Id());
-			pstmt.setString(5, dto.getCusomter_Id());
-			pstmt.setString(6, dto.getWine_Number());
-			pstmt.setInt(7, dto.getProduct_Price());
-			pstmt.setString(8, dto.isDiscount() ? "Y" : "N");
+				// 1) MERGE: CUSTOMERS 테이블 갱신 또는 삽입
+				pm.setString(1, dto.getCusomter_Id());
+				pm.setString(2, userName);
+				pm.setString(3, userName);
+				pm.executeUpdate();
 
-			int affected = pstmt.executeUpdate();
-			if (affected == 1) {
-				return true;
-			} else {
-				return false;
+				// 2) INSERT: ORDERS 테이블에 주문 정보 삽입
+				po.setString(1, dto.getOrder_Id());
+				po.setString(2, dto.getCusomter_Id());
+				po.setString(3, dto.getWine_Number());
+				po.setInt(4, dto.getProduct_Price());
+				po.setString(5, dto.isDiscount() ? "Y" : "N");
+				int orderCount = po.executeUpdate();
+
+				if (orderCount == 1) {
+					conn.commit();
+					return true;
+				} else {
+					conn.rollback();
+					return false;
+				}
 			}
 		}
 	}
