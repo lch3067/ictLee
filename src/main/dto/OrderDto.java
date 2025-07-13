@@ -5,6 +5,7 @@ import java.sql.Timestamp;
 // 주문
 public class OrderDto {
 
+	private String idx;
 	private String order_Id;
 	private String cusomter_Id;
 	private String wine_Number;
@@ -70,6 +71,13 @@ public class OrderDto {
 
 	public void setDiscount(boolean discount) {
 		this.discount = discount;
+	}
+
+	@Override
+	public String toString() {
+		return "OrderDto [idx=" + idx + ", order_Id=" + order_Id + ", cusomter_Id=" + cusomter_Id + ", wine_Number="
+				+ wine_Number + ", order_Date=" + order_Date + ", product_Price=" + product_Price + ", discount="
+				+ discount + "]";
 	};
 	
 }
