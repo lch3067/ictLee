@@ -33,21 +33,25 @@ public class Menu {
 
 	public void displayMenu() throws Exception {
 		while (true) {
-			clearConsole();
 			System.out.println("┌────────────────────────────┐");
-			System.out.println("│      1. 회원가입             │");
-			System.out.println("│      2. 로그인                │");
-			System.out.println("│      3. 종료               │");
+			System.out.println("│ 1. 회원가입                  ");
+			System.out.println("│ 2. 로그인                    ");
+			System.out.println("│ 3. 종료                     ");
 			System.out.println("└────────────────────────────┘");
 			System.out.print("▶ 메뉴선택: ");
 			String menu = scanner.nextLine().trim();
 
 			switch (menu) {
 			case "1":
-				uc.Join(handleSignUp());
+				stateView(uc.Join(handleSignUp()), "join");
 				break;
 			case "2":
-				handleSignOn();
+				if(handleSignOn()) {					
+					stateView(true, "login");
+					
+				} else {
+					stateView(false, "login");
+				}
 				break;
 			case "3":
 				System.out.println("프로그램을 종료합니다.");
@@ -67,33 +71,36 @@ public class Menu {
 		System.out.print("로그인 - 비밀번호 입력: ");
 		String password = scanner.nextLine().trim();
 
+		System.out.print("로그인 - 이름 입력: ");
+		String name = scanner.nextLine().trim();
+
 		System.out.print("이메일 입력 (선택): ");
 		String email = scanner.nextLine().trim();
 
 		System.out.print("생년월일 입력 (YYYY-MM-DD): ");
 		LocalDate birthDate = null;
-	    while (birthDate == null) {
-	        System.out.print("생년월일 입력 (YYYY-MM-DD): ");
-	        String bdInput = scanner.nextLine().trim();
-	        try {
-	            birthDate = LocalDate.parse(bdInput); // ISO 포맷 파싱
-	        } catch (DateTimeParseException e) {
-	            System.out.println("[오류] 날짜 형식이 잘못되었습니다. 다시 입력해주세요.");
-	        }
-	    }
-	    
+		while (birthDate == null) {
+			System.out.print("생년월일 입력 (YYYY-MM-DD): ");
+			String bdInput = scanner.nextLine().trim();
+			try {
+				birthDate = LocalDate.parse(bdInput); // ISO 포맷 파싱
+			} catch (DateTimeParseException e) {
+				System.out.println("[오류] 날짜 형식이 잘못되었습니다. 다시 입력해주세요.");
+			}
+		}
+
 		UserDto userdto = new UserDto();
 		userdto.setUserId(userId);
 		userdto.setPassword(password);
+		userdto.setUsername(name);
 		userdto.setEmail(email);
-	    userdto.setBirthDate(birthDate);
-		
+		userdto.setBirthDate(birthDate);
+
 		return userdto;
 	}
-	
-	//  로그인
-	private void handleSignOn() {
-		clearConsole();
+
+	// 로그인
+	private boolean handleSignOn() {
 		System.out.print("로그인 - 아이디 입력: ");
 		String id = scanner.nextLine().trim();
 
@@ -102,14 +109,31 @@ public class Menu {
 
 		if (uc.Login(id, pw)) {
 			currentUser = id;
-			System.out.println("\n[" + currentUser + "] 로그인 성공!");
+			return true;
 		} else {
-			System.out.println("\n로그인 실패. 아이디/비밀번호를 확인하세요.");
+			return false;
 		}
 	}
 
-	public static void clearConsole() {
-		System.out.print("\033[H\033[2J");
-		System.out.flush();
+	public void stateView(boolean result, String flag) {
+		switch (flag) {
+		case "join":
+			if (result) {
+				System.out.println("✅ 회원가입이 성공적으로 완료되었습니다.");
+			} else {
+				System.out.println("❌ 회원가입에 실패했습니다. 다시 시도해 주세요.");
+			}
+			break;
+		case "login":
+			if (result) {
+				System.out.println("✅ 로그인에 성공하였습니다. " + currentUser + "님 환영합니다!");
+			} else {
+				System.out.println("❌ 로그인에 실패했습니다. 아이디 또는 비밀번호를 확인해 주세요.");
+			}
+			break;
+		default:
+			System.out.println("알 수 없는 요청입니다.");
+		}
 	}
+
 }
