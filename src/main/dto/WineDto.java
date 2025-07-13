@@ -1,6 +1,8 @@
 package main.dto;
 
-// 와인 객체
+import main.common.enums.WineOrigin;
+
+// 와인
 public class WineDto {
 
 	// 와인 제품 번호
@@ -10,7 +12,9 @@ public class WineDto {
 	// 와인 가격
 	private int wine_price;
 	// 와인 산지
-	private String wine_growing;
+	private WineOrigin region;
+	// 와인 나라
+	private WineOrigin country;
 	// 도수
 	private String wine_strength;
 	
@@ -20,11 +24,10 @@ public class WineDto {
 	public WineDto() {}
 	
 	// 하지만, 매개변수가 있는 생성자를 만들면 기본 생성자도 같이 만들어 줘야한다.
-	public WineDto(String wine_name, int wine_price, String wine_growing, String wine_strength) {
-		super();
+	public WineDto(String wine_name, int wine_price, WineOrigin region, String wine_strength) {
 		this.wine_name = wine_name;
 		this.wine_price = wine_price;
-		this.wine_growing = wine_growing;
+		this.region = region;
 		this.wine_strength = wine_strength;
 	}
 
@@ -41,11 +44,11 @@ public class WineDto {
 	public void setWine_price(int wine_price) {
 		this.wine_price = wine_price;
 	}
-	public String getWine_growing() {
-		return wine_growing;
+	public WineOrigin region() {
+		return region;
 	}
-	public void setWine_growing(String wine_growing) {
-		this.wine_growing = wine_growing;
+	public void setWine_growing(WineOrigin region) {
+		this.region = region;
 	}
 	public String getWine_strength() {
 		return wine_strength;
