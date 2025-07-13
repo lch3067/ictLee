@@ -13,7 +13,6 @@ import main.dto.UserDto;
 
 public class UserDaoImpl implements UserDao {
 
-	// 전역변수 / 정적변수 | 공유
 	private static UserDaoImpl instance;
 
 	public UserDaoImpl() {
