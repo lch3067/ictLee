@@ -2,6 +2,7 @@ package main.service.Implements;
 
 import main.dao.UserDao;
 import main.dao.Implements.UserDaoImpl;
+import main.dto.LoginResultDto;
 import main.dto.UserDto;
 import main.service.UserService;
 
@@ -10,12 +11,12 @@ public class UserServiceImpl implements UserService{
 	UserDao logindao = UserDaoImpl.getInstance();
 	
 	@Override
-	public boolean Login(String id, String pwd) {
-		boolean authentication =  logindao.Login(id, pwd);
-		if(authentication) {
-			return true;
+	public LoginResultDto Login(String id, String pwd) {
+		LoginResultDto authentication =  logindao.Login(id, pwd);
+		if(authentication.isSuccess()) {
+			return new LoginResultDto(authentication.isSuccess(), authentication.getRole(), authentication.getName());
 		} else {
-			return false;
+			return new LoginResultDto(authentication.isSuccess(), authentication.getRole(), authentication.getName());
 		}	
 	}
 

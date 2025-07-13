@@ -1,10 +1,11 @@
 package main.service;
 
+import main.dto.LoginResultDto;
 import main.dto.UserDto;
 
 public interface UserService {
 	
-	public boolean Login(String id, String pwd);
+	public LoginResultDto Login(String id, String pwd);
 	
 	public boolean Join(UserDto userdto);
 

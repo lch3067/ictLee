@@ -3,6 +3,7 @@ package main.controller;
 import java.sql.Date;
 import java.sql.Timestamp;
 
+import main.dto.LoginResultDto;
 import main.dto.UserDto;
 import main.service.UserService;
 import main.service.Implements.UserServiceImpl;
@@ -11,14 +12,14 @@ public class UserController {
 
 	UserService login = new UserServiceImpl();
 	
-	public boolean Login(String id, String pwd) {
+	public LoginResultDto Login(String id, String pwd) {
 		
-		boolean authentication = login.Login(id, pwd);
-		if(authentication) {			
-			return true;
+		LoginResultDto authentication =  login.Login(id, pwd);
+		if(authentication.isSuccess()) {
+			return new LoginResultDto(authentication.isSuccess(), authentication.getRole(), authentication.getName());
 		} else {
-			return false;
-		}
+			return new LoginResultDto(authentication.isSuccess(), authentication.getRole(), authentication.getName());
+		}	
 	}
 	
 	public boolean Join(UserDto userdto) {
