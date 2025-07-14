@@ -1,13 +1,13 @@
 package main;
 
-import main.view.Menu;
+import main.view.MenuView;
 
 
 public class myMain  {
 	
 	public static void main(String[] args) throws Exception {
 		
-		Menu menu = new Menu();
+		MenuView menu = new MenuView();
 		menu.displayMenu();
 	
 	}
