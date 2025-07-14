@@ -34,22 +34,23 @@ public class UserDaoImpl implements UserDao {
 
 			pstmt.setString(1, id);
 			pstmt.setString(2, pwd);
-			try (var rs = pstmt.executeQuery()) {
+			var rs = pstmt.executeQuery();
+				
 	            if (rs.next() && rs.getInt("cnt") > 0) {
 	                return new LoginResultDto(true, rs.getString("role"), rs.getString("name"));
 	            }
-	        }
+	        
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return new LoginResultDto(true, null, null);
+		return new LoginResultDto(false, null, null);
 	}
 
 	@Override
 	public boolean Join(UserDto userdto) {
-		
+
 		System.out.println(userdto);
-		
+
 		String sql = "INSERT INTO USERS (USER_ID, USERNAME, PASSWORD, EMAIL, BIRTH_DATE) "
 				+ "VALUES (?, ?, ?, ?, TO_DATE(?, 'YYYY-MM-DD'))";
 		try (Connection conn = OracleConnectionManager.getConnection();

@@ -52,6 +52,7 @@ public class MenuView {
 					ov.oderDisplay(lrd.getRole(), lrd.getName());
 				} else {
 					stateView(lrd.isSuccess(), "login");
+					break;
 				}
 				break;
 			case "3":
