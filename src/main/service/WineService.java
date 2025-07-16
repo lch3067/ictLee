@@ -9,16 +9,4 @@ public interface WineService {
 	
 	public List<WineDto> selectWineProduct();
 	
-	public int inserWineProduct(WineDto winedto);
-	
-	public int updateWineProduct(WineDto winedto);
-	
-	public int deleteWineProduct(String wine_number);
-	
-	public ArrayList<WineDto> selectOneWineProduct(String wine_name);
-	
-	public ArrayList<WineDto> selectAllWineProduct();
-	
-	public ArrayList<WineDto> selectBestOfBestWineProductTopFive();
-	
 }

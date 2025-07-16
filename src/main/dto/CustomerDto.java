@@ -5,8 +5,7 @@ import java.time.LocalDate;
 import main.common.enums.CustomerGrade;
 
 // 고객 DTO
-public class CustomerDto {
-
+public class CustomerDto extends OrderDto {
 
     private String customerId;
     private String userId;

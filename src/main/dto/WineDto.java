@@ -16,7 +16,6 @@ public class WineDto {
 
 	public WineDto(int wine_idx, String wine_number, String wine_name, int wine_price, WineOrigin region,
 			WineOrigin country, String wine_strength) {
-		super();
 		this.wine_idx = wine_idx;
 		this.wine_number = wine_number;
 		this.wine_name = wine_name;
