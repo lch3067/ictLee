@@ -9,4 +9,5 @@ public interface UserDao {
 	
 	public boolean Join(UserDto userdto);
 
+	public boolean userIdDuplicateCheck(String userId);
 }

@@ -34,12 +34,12 @@ public class UserDaoImpl implements UserDao {
 
 			pstmt.setString(1, id);
 			pstmt.setString(2, pwd);
-			var rs = pstmt.executeQuery();
-				
-	            if (rs.next() && rs.getInt("cnt") > 0) {
-	                return new LoginResultDto(true, rs.getString("role"), rs.getString("name"));
-	            }
-	        
+			var rows = pstmt.executeQuery();
+
+			if (rows.next() && rows.getInt("cnt") > 0) {
+				return new LoginResultDto(true, rows.getString("role"), rows.getString("name"));
+			}
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -48,8 +48,6 @@ public class UserDaoImpl implements UserDao {
 
 	@Override
 	public boolean Join(UserDto userdto) {
-
-		System.out.println(userdto);
 
 		String sql = "INSERT INTO USERS (USER_ID, USERNAME, PASSWORD, EMAIL, BIRTH_DATE) "
 				+ "VALUES (?, ?, ?, ?, TO_DATE(?, 'YYYY-MM-DD'))";
@@ -67,6 +65,32 @@ public class UserDaoImpl implements UserDao {
 			if (rows == 1) {
 				return true;
 			} else {
+				return false;
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	@Override
+	public boolean userIdDuplicateCheck(String userId) {
+
+		String sql = "SELECT COUNT(user_id) AS cnt FROM USERS WHERE USER_ID = ?";
+
+		try (Connection conn = OracleConnectionManager.getConnection();
+				PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+			pstmt.setString(1, userId);
+
+			var rows = pstmt.executeQuery();
+
+			if (rows.next()) {
+				int cnt = rows.getInt("cnt");
+				return cnt == 1;
+			} else {
+				System.out.println("결과 없음");
 				return false;
 			}
 

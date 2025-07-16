@@ -33,4 +33,11 @@ public class UserController {
 		
 	}
 	
+	public boolean userIdDuplicateCheck(String userId) {
+		
+		boolean result = login.userIdDuplicateCheck(userId);
+		
+		return result;
+	}
+	
 }
